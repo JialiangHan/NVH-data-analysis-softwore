@@ -3,7 +3,7 @@ from matplotlib import rcParams
 import numpy as np
 
 # ✅ 设置中文字体（自动选择系统常见字体）
-rcParams['font.family'] = ['Microsoft YaHei', 'SimHei']
+rcParams['font.family'] = ['Microsoft YaHei',]
 rcParams['axes.unicode_minus'] = False  # 解决负号显示为方块的问题
 
 
