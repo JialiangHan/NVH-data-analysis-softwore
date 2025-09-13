@@ -4,10 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42af6dbd-d36e-44b2-9faa-90ff062682ff" name="更改" comment="basic structure and first test is done.">
+    <list default="true" id="42af6dbd-d36e-44b2-9faa-90ff062682ff" name="更改" comment="add log system, but bug exists">
+      <change afterPath="$PROJECT_DIR$/analysis/filter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/analysis_panel/analysis_panel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/analysis_panel/audio_player.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/analysis_panel/filter_widget.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/analysis_panel/plot_widget.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/file_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/main_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/plotter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audio_loader.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fft_processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis/fft_processor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/filter.py" beforeDir="false" afterPath="$PROJECT_DIR$/filter/filter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_window.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotter.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,8 +76,17 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jialiang Han\PycharmProjects\PythonProject\ui\analysis_panel" />
+      <recent name="C:\Users\Jialiang Han\PycharmProjects\PythonProject\log" />
+      <recent name="C:\Users\Jialiang Han\PycharmProjects\PythonProject\analysis" />
+      <recent name="C:\Users\Jialiang Han\PycharmProjects\PythonProject\filter" />
+      <recent name="C:\Users\Jialiang Han\PycharmProjects\PythonProject\ui" />
+    </key>
+  </component>
   <component name="RunManager">
-    <configuration name="main_window" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="NVH-data-analysis-softwore" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,7 +100,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_window.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -92,7 +111,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main_window" />
+        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
@@ -116,6 +135,8 @@
       <workItem from="1757501233214" duration="1751000" />
       <workItem from="1757504807358" duration="2713000" />
       <workItem from="1757507804731" duration="9982000" />
+      <workItem from="1757686962541" duration="92000" />
+      <workItem from="1757731129925" duration="8723000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -133,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757511600464</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add log system, but bug exists">
+      <option name="closed" value="true" />
+      <created>1757686992919</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1757686992919</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
@@ -158,22 +187,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="basic structure and first test is done." />
-    <option name="LAST_COMMIT_MESSAGE" value="basic structure and first test is done." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>4</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="add log system, but bug exists" />
+    <option name="LAST_COMMIT_MESSAGE" value="add log system, but bug exists" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/NVH_data_analysis_softwore$main.coverage" NAME="main 覆盖结果" MODIFIED="1757510522205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NVH_data_analysis_softwore$main.coverage" NAME="main 覆盖结果" MODIFIED="1757733215915" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NVH_data_analysis_softwore$audio_loader.coverage" NAME="audio_loader 覆盖结果" MODIFIED="1757509055904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NVH_data_analysis_softwore$main_window.coverage" NAME="main_window 覆盖结果" MODIFIED="1757686861023" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NVH_data_analysis_softwore$main_window.coverage" NAME="main 覆盖结果" MODIFIED="1757740085839" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
