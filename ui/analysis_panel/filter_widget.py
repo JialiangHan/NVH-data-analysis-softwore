@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QLineEdit, QPushButton, QMessageBox
 from analysis.filter import butter_filter
-from analysis.fft_processor import compute_fft
+
 
 class FilterWidget(QWidget):
     def __init__(self):

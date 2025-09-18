@@ -10,6 +10,7 @@ from .plot_widget import PlotWidget
 # 引入算法模块
 from analysis.fft_processor import compute_fft
 from analysis.filter import butter_filter
+from analysis.level_vs_time import compute_level_vs_time
 
 
 logger = logging.getLogger(__name__)
@@ -26,9 +27,10 @@ class AnalysisPanel(QWidget):
         self.apply_button = QPushButton("应用滤波")
         self.analysis_type_combo = QComboBox()
         self.analysis_type_combo.addItems([
-            "频谱分析 (FFT)",
+            "FFT(single)","FFT(average)","FFT(peak hold)",
             "波形分析 (Waveform)",
-            "滤波前后对比"
+            "colormap",
+            "Level vs Time"
         ])
         self.analysis_button = QPushButton("开始分析")
         # 播放控件
@@ -69,17 +71,18 @@ class AnalysisPanel(QWidget):
         self.apply_button.clicked.connect(self.apply_filter)
         self.play_pause_button.clicked.connect(self.toggle_play_pause)
         self.stop_button.clicked.connect(self.stop_audio)
-        self.analysis_type_combo.currentIndexChanged.connect(self.update_analysis_plot)
         self.analysis_button.clicked.connect(self.perform_analysis)
     # -----------------------------
     # 加载音频
-    def load_audio(self, y, sr):
+    def load_audio(self, y, sr, draw=False):
+        logger.debug("load_audio start")
         self.y = y
         self.sr = sr
         self.y_filtered = None
-        freqs, fft_result = compute_fft(y, sr)
-        self.plot_widget.plot(freqs, fft_result, title="原始频谱")
-        logger.info("音频加载完成，绘制原始频谱")
+        logger.info(f"音频加载完成: 长度={len(y)}, 采样率={sr}")
+
+        if draw:
+            self.perform_analysis()
 
     # -----------------------------
     # 应用滤波
@@ -122,65 +125,41 @@ class AnalysisPanel(QWidget):
         self.audio_player.stop()
         self.play_pause_button.setText("播放")
 
-    def update_analysis_plot(self):
-        if self.y is None:
-            return
-
-        choice = self.analysis_type_combo.currentText()
-        if choice == "频谱分析 (FFT)":
-            data = self.y_filtered if self.y_filtered is not None else self.y
-            freqs, fft_result = compute_fft(data, self.sr)
-            self.plot_widget.plot(freqs, np.abs(fft_result), title="频谱分析")
-        elif choice == "波形分析 (Waveform)":
-            data = self.y_filtered if self.y_filtered is not None else self.y
-            t = np.arange(len(data)) / self.sr
-            self.plot_widget.plot(t, data, title="波形分析")
-        elif choice == "滤波前后对比":
-            if self.y_filtered is None:
-                self.plot_widget.plot(np.arange(len(self.y))/self.sr, self.y, title="原始音频")
-            else:
-                t = np.arange(len(self.y))/self.sr
-                self.plot_widget.ax.clear()
-                self.plot_widget.ax.plot(t, self.y, label="原始")
-                self.plot_widget.ax.plot(t, self.y_filtered, label="滤波后")
-                self.plot_widget.ax.set_title("滤波前后对比")
-                self.plot_widget.ax.set_xlabel("时间 (s)")
-                self.plot_widget.ax.set_ylabel("幅值")
-                self.plot_widget.ax.legend()
-                self.plot_widget.canvas.draw()
-
     def perform_analysis(self):
         if self.y is None:
             logger.warning("没有音频可分析")
             return
 
         choice = self.analysis_type_combo.currentText()
+        data = self.y_filtered if self.y_filtered is not None else self.y  # 统一放在最前面
 
-        if choice == "频谱分析 (FFT)":
-            data = self.y_filtered if self.y_filtered is not None else self.y
-            freqs, fft_result = compute_fft(data, self.sr)
-            self.plot_widget.plot(freqs, np.abs(fft_result), title="频谱分析")
-            logger.info("完成频谱分析绘图")
+        mode_map = {
+            "FFT(single)": "single",
+            "FFT(average)": "average",
+            "FFT(peak hold)": "peak"
+        }
+
+        if choice in mode_map:
+            freqs, fft_result = compute_fft(data, self.sr, mode=mode_map[choice])
+            self.plot_widget.plot(freqs, np.abs(fft_result), title=f"{choice} 频谱分析")
+            logger.info(f"完成 {choice} 绘图")
 
         elif choice == "波形分析 (Waveform)":
-            data = self.y_filtered if self.y_filtered is not None else self.y
             t = np.arange(len(data)) / self.sr
             self.plot_widget.plot(t, data, title="波形分析")
             logger.info("完成波形分析绘图")
 
-        elif choice == "滤波前后对比":
-            if self.y_filtered is None:
-                t = np.arange(len(self.y)) / self.sr
-                self.plot_widget.plot(t, self.y, title="原始音频")
-                logger.info("仅显示原始音频")
-            else:
-                t = np.arange(len(self.y)) / self.sr
-                self.plot_widget.ax.clear()
-                self.plot_widget.ax.plot(t, self.y, label="原始")
-                self.plot_widget.ax.plot(t, self.y_filtered, label="滤波后")
-                self.plot_widget.ax.set_title("滤波前后对比")
-                self.plot_widget.ax.set_xlabel("时间 (s)")
-                self.plot_widget.ax.set_ylabel("幅值")
-                self.plot_widget.ax.legend()
-                self.plot_widget.canvas.draw()
-                logger.info("完成滤波前后对比绘图")
+        elif choice == "colormap":
+            self.plot_widget.plot_spectrogram(data, self.sr)  # ✅ 用滤波后的
+            logger.info("绘制声谱图完成")
+
+        elif choice == "Level vs Time":
+            data = self.y_filtered if self.y_filtered is not None else self.y
+            times, levels = compute_level_vs_time(data, self.sr, frame_length=0.125, p0=1.0)
+            self.plot_widget.plot(times, levels, title="Level vs Time")
+            self.plot_widget.ax.set_xlabel("时间 (s)")
+            self.plot_widget.ax.set_ylabel("声级 (dBFS)")
+            logger.info("完成 Level vs Time 绘图")
+
+        else:
+            logger.warning(f"未知分析类型: {choice}")
